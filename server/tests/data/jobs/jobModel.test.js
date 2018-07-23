@@ -16,7 +16,9 @@ describe('Database Tests', () => {
       done();
     });
   });
-  describe('Job should require titleAndSalary', () => {
-    const job = new Job({});
+  after()
+  it('Job should require titleAndSalary', () => {
+    const job = 'eyo';
+    expect(job).to.be.null;
   });
 });
