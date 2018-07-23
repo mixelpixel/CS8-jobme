@@ -5,6 +5,7 @@ import { getEmployerProfile } from '../../actions/profileActions';
 import { updateEmployer } from '../../actions'; // TODO: update when file structure changes
 
 import styled from 'styled-components';
+import { runInThisContext } from 'vm';
 
 const StyledProfile = styled.div`
   min-width: 400px;
@@ -31,10 +32,16 @@ const TopImg = styled.img`
 const Description = TopContainer.extend`
   font-size: 20px;
 `;
+const DescriptionInput = styled.textarea`
+  width: 500px;
+  height: 300px;
+`;
+
 const SecurityContainer = TopContainer.extend`
   flex-direction: column;
   width: 70%;
   margin-left: 100px;
+
 `;
 const ConfirmCheck = styled.label`
 
@@ -49,7 +56,8 @@ const SecurityBoxes = TopTitles.extend`
 
 `;
 const SaveButton = styled.button`
-
+  max-width: 250px;
+  margin-left: 100px;
 `;
 
 class EmployerProfile extends Component {
@@ -75,28 +83,35 @@ class EmployerProfile extends Component {
     this.setState({[name]: value });
   }
 
-  submitHandler = (event) => {
+  handleChangeInfoSubmit = (event) => {
+    event.preventDefault();
+    
+    const { companyName, companyUrl, industry, description, email } = this.state;
+
+    this.props.updateEmployer({ companyName, companyUrl, industry, description, email });    
+  }
+
+  handleChangePasswordSubmit = (event) => {
     event.preventDefault();
 
-    const infoToUpdateWith = this.selectStateWithOrWithoutPasswordInfo(this.state);
-    
-    this.props.updateEmployer(infoToUpdateWith);
-    
+    const { oldPassword, newPassword, confirmPassword } = this.state;
+
+    this.props.updateEmployer({ oldPassword, newPassword, confirmPassword });
   }
 
-  selectStateWithOrWithoutPasswordInfo = (state) => {
-    const { password } = this.props.loggedInEmployer.profile;
-    const {oldPassword, newPassword, confirmPassword } = this.state;
-    const {companyName, companyUrl, industry, description, email } = this.state;
+  // selectStateWithOrWithoutPasswordInfo = (state) => {
+  //   const { password } = this.props.loggedInEmployer.profile;
+  //   const {oldPassword, newPassword, confirmPassword } = this.state;
+  //   const {companyName, companyUrl, industry, description, email } = this.state;
 
-    if (oldPassword === password && newPassword === confirmPassword) {
-      return state;
-    } else if (oldPassword === '' && newPassword === '' && confirmPassword === '') {
-      return { companyName, companyUrl, industry, description, email };
-    }
+  //   if (oldPassword === password && newPassword === confirmPassword) {
+  //     return state;
+  //   } else if (oldPassword === '' && newPassword === '' && confirmPassword === '') {
+  //     return { companyName, companyUrl, industry, description, email };
+  //   }
 
-    alert('Please enter valid password fields');
-  }
+  //   alert('Please enter valid password fields');
+  // }
 
   render() {
     console.log(this.props.loggedInEmployer.profile.email);
@@ -111,7 +126,7 @@ class EmployerProfile extends Component {
             <div>Industry:</div>
           </TopTitles>
           <TopBoxes>
-            <form onSubmit={this.submitHandler}>
+            <form onSubmit={this.handleChangeInfoSubmit}>
               <input 
                 placeholder={profile.email}
                 onChange={this.inputHandler}
@@ -142,7 +157,7 @@ class EmployerProfile extends Component {
         </TopContainer>
         <Description>Description: 
           <form onSubmit={this.submitHandler}>
-            <textarea 
+            <DescriptionInput 
               placeholder={profile.description}
               onChange={this.inputHandler}
               name='description'
@@ -150,8 +165,11 @@ class EmployerProfile extends Component {
             />
           </form>
         </Description>
+        <SaveButton onSubmit={this.handleChangeInfoSubmit}>
+          Save
+        </SaveButton>
         <SecurityContainer>
-          <form onSubmit={this.submitHandler}>
+          <form onSubmit={this.handleChangePasswordSubmit}>
             <ConfirmCheck>
               <input 
                 type='checkbox' 
@@ -170,7 +188,7 @@ class EmployerProfile extends Component {
               <div>Confirm Password:</div>
             </SecurityTitles>
             <SecurityBoxes>
-              <form onSubmit={this.submitHandler}>
+              <form onSubmit={this.handleChangePasswordSubmit}>
                 <input 
                   placeholder='Old password'
                   onChange={this.inputHandler}
@@ -192,7 +210,7 @@ class EmployerProfile extends Component {
               </form>
             </SecurityBoxes>
           </Security>
-          <SaveButton onSubmit={this.submitHandler}>
+          <SaveButton onSubmit={this.handleChangePasswordSubmit}>
             Save
           </SaveButton>
         </SecurityContainer>
@@ -205,4 +223,4 @@ const mapStateToProps = state => {
   return ({ ...state });
 };
 
-export default connect(mapStateToProps, { getEmployerProfile })(EmployerProfile);
+export default connect(mapStateToProps, { getEmployerProfile, updateEmployer })(EmployerProfile);
