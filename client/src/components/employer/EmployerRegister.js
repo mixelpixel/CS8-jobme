@@ -9,7 +9,7 @@ import { registerEmployer } from '../../actions'; // TODO: update when file stru
 class RegisterEmployer extends Component {
   state = {
     companyName: '',
-    companyUrl: '',
+    companyUrl: '', //http://
     industry: '',
     description: '',
     username: '',

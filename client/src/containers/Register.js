@@ -5,8 +5,7 @@ class Register extends Component {
     render() {
         return (
             <div>
-                <EmployerRegister />
-                
+                <EmployerRegister /> 
             </div>
         );
     }
