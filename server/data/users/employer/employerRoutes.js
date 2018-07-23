@@ -28,8 +28,8 @@ router
   })
   .post('/register', (req, res) => {
     const {
- companyName, companyUrl, industry, description, email, password 
-} = req.body;
+      companyName, companyUrl, industry, description, email, password,
+    } = req.body;
 
     if (!companyName || !companyUrl || !industry || !description || !email || !password) {
       res.status(300).json({ message: "You need to think about what you're sending, bro." });
@@ -46,8 +46,13 @@ router
 
     employer
       .save()
-      .then((newUser) => {
-        res.status(200).json(newUser);
+      .then((newEmployer) => {
+        const user = {
+          email: newEmployer.email,
+          userType: newEmployer.userType,
+        };
+        const token = jwt.encode(user, secret);
+        res.status(200).json({ newEmployer, token });
       })
       .catch((err) => {
         console.log(err);
@@ -80,10 +85,10 @@ router
             return res.status(500).json(err);
           });
       })
-      .catch((err) => res.status(500).json(err));
+      .catch(err => res.status(500).json(err));
   })
   .get('/profile', passport.authenticate('bearer', { session: false }),
-   (req, res) => {
+    (req, res) => {
       res.status(200).json(req.user);
     })
   .put('/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
@@ -100,10 +105,10 @@ router
     });
     Employer.findOneAndUpdate({ email: oldUser.email }, newUser).then((user) => {
       res.status(200).json(user);
-    }).catch((err) => 
-         res.status(500).json(err)
-        // sends back old doc bro
-      );
+    }).catch(err =>
+      res.status(500).json(err),
+      // sends back old doc bro
+    );
   });
 
 module.exports = router;

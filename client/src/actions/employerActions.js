@@ -21,7 +21,7 @@ export const getEmployerProfile = token => (dispatch) => {
     .get('/employers/profile', requestOptions)
     .then((response) => {
       dispatch({ type: actionTypes.GET_EMPLOYER_PROFILE.SUCCESS, profile: response.data });
-})
+    })
     .catch((err) => {
       console.log('Error', err);
       dispatch({
@@ -37,7 +37,7 @@ export const loginEmployer = credentials => (dispatch) => {
     .post('/employers/login', credentials)
     .then((response) => {
       const { token } = response.data;
-      localStorage.setItem('token', token);
+      window.localStorage.setItem('token', token);
       dispatch({ type: actionTypes.LOGIN_EMPLOYER.SUCCESS, token });
     })
     .catch((err) => {
@@ -53,8 +53,10 @@ export const registerEmployer = user => (dispatch) => {
 
   axios
     .post('/employers/register', user)
-    .then(() => {
-      dispatch({ type: actionTypes.REGISTER_EMPLOYER.SUCCESS });
+    .then((response) => {
+      const { token } = response.data;
+      window.localStorage.setItem('token', token);
+      dispatch({ type: actionTypes.REGISTER_EMPLOYER.SUCCESS, token });
     })
     .catch((err) => {
       const { message } = err.data;

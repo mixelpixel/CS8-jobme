@@ -23,6 +23,8 @@ export default (state = defaultState, action) => {
     case actionTypes.GET_EMPLOYER_PROFILE.SUCCESS:
       const { profile } = action;
       return { ...state, profile };
+    case actionTypes.REGISTER_EMPLOYER.SUCCESS:
+      return { ...state, token: action.token }
     default:
       return state;
   }
