@@ -24,7 +24,9 @@ export default (state = defaultState, action) => {
       const { profile } = action;
       return { ...state, profile };
     case actionTypes.REGISTER_EMPLOYER.SUCCESS:
-      return { ...state, token: action.token }
+      return { ...state, token: action.token };
+    case actionTypes.LOGOUT_EMPLOYER.SUCCESS:
+      return { ...state, token: null };
     default:
       return state;
   }

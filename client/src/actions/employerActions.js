@@ -66,3 +66,8 @@ export const registerEmployer = user => (dispatch) => {
       });
     });
 };
+
+export const logoutEmployer = dispatch => {
+  window.localStorage.removeItem('token');
+  dispatch({ type: actionTypes.LOGOUT_SEEKER.SUCCESS });
+}

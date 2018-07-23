@@ -3,6 +3,8 @@ import {
   getEmployerProfile,
   loginEmployer,
   registerEmployer,
+  logoutEmployer,
+  logoutSeeker,
 } from './employerActions';
 
 import {
@@ -12,5 +14,5 @@ import {
 } from './seekerActions';
 
 export {
-  getEmployerProfile, loginEmployer, registerEmployer, loginSeeker,
+  getEmployerProfile, loginEmployer, registerEmployer, loginSeeker, logoutEmployer, logoutSeeker,
 };

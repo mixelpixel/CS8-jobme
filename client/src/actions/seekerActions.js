@@ -25,3 +25,8 @@ export const loginSeeker = credentials => (dispatch) => {
       });
     });
 };
+
+export const logoutSeeker = dispatch => {
+  window.localStorage.removeItem('token');
+  dispatch({ type: actionTypes.LOGOUT_SEEKER.SUCCESS });
+}

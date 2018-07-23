@@ -23,6 +23,8 @@ export default (state = defaultState, action) => {
     case actionTypes.GET_SEEKER_PROFILE.SUCCESS:
       const { profile } = action;
       return { ...state, profile };
+    case actionTypes.LOGOUT_SEEKER.SUCCESS:
+      return { ...state, token: null };
     default:
       return state;
   }
