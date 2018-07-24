@@ -6,7 +6,6 @@ const express = require('express');
 const path = require('path');
 
 
-
 server.use(express.static(path.join(__dirname, 'client/build')));
 server
   .get('*', (req, res) => {
@@ -17,17 +16,9 @@ server
 mongoose
   .connect(`mongodb://${configDBUSER}:${configDBPASS}@ds239681.mlab.com:39681/jobme`)
   .then(() => {
-    // const employer = new Employer({
-    //   companyName: 'Lambda School',
-    //   description: 'School of Computer Science',
-    // });
-    // employer.save();
-
     console.log('\n=== Connected to MongoDB ===\n');
   })
   .catch(err => console.log('database conection failed', err));
-
-
 
 
 const port = process.env.PORT || 5000;

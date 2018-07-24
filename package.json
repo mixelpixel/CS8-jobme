@@ -6,6 +6,7 @@
   "dependencies": {
     "bcrypt": "^3.0.0",
     "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "chai-http": "^4.0.0",
     "cors": "^2.8.4",
     "eslint": "^5.1.0",
@@ -31,7 +32,7 @@
   },
   "scripts": {
     "start": "nodemon app.js",
-    "test": "mocha server/tests/data/jobs/jobModel.test.js",
+    "test": "mocha server/tests/data --recursive",
     "heroku-postbuild": "cd client && npm install && npm run build"
   }
 }
